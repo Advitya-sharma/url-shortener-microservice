@@ -6,7 +6,9 @@ var mongoose = require("mongoose");
 var cors = require("cors");
 var bodyParser = require("body-parser");
 var app = express();
+var dns = require("dns");
 require("dotenv").config();
+const urlExists = require("url-exists");
 
 // Basic Configuration
 var port = process.env.PORT || 3000;
@@ -14,14 +16,14 @@ app.use(cors());
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 
 const Schema = mongoose.Schema;
 
 const urlObjSchema = new Schema({
   url: { type: String },
-  urlId: { type: Number }
+  urlId: { type: Number },
 });
 
 const urlObj = mongoose.model("urlObj", urlObjSchema);
@@ -37,7 +39,18 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/shorturl/:id", (req, res) => {
-  res.json({ id: req.params.id });
+  urlObj.findOne({ urlId: req.params.id }, (err, data) => {
+    if (err) return console.error(err);
+    if (data) {
+      if (data.url.slice(0, 8) == "https://") {
+        res.redirect(data.url);
+      } else {
+        res.redirect(`https://${data.url}`);
+      }
+    } else {
+      res.json({ error: "No short URL found for the given input" });
+    }
+  });
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -62,7 +75,14 @@ const getOrCreate = (url, res) => {
 
 app.post("/api/shorturl/new", (req, res) => {
   const url = req.body.url;
-  getOrCreate(url, res);
+
+  urlExists(url, function (err, exists) {
+    if (exists) {
+      getOrCreate(url, res);
+    } else {
+      res.json({ error: "enter valid url" });
+    }
+  });
 });
 
 app.listen(port, function () {
