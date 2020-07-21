@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <title>URL Shortener</title>
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/public/style.css" rel="stylesheet" type="text/css" />
-  </head>
 
-  <body>
-    <div class="container">
-      <form action="api/shorturl/new" method="POST">
-        <label for="url_input">URL to be shortened</label>
-        <input
-          id="url_input"
-          type="text"
-          name="url"
-          placeholder="www.example.com"
-        />
-        <input type="submit" value="POST URL" />
-      </form>
-    </div>
-  </body>
+<head>
+  <title>URL Shortener</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/public/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>
+      welcome !
+    </h1>
+    <form action="api/shorturl/new" method="POST">
+      <h5>
+        format: https://hostname.com
+      </h5>
+      <label for="url_input">URL to be shortened</label>
+      <input id="url_input" type="text" name="url" placeholder="www.example.com" />
+      <input type="submit" value="POST URL" />
+    </form>
+    <a href="https://github.com/Advitya-sharma/">Find me here</a>
+  </div>
+</body>
+
 </html>
